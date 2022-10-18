@@ -15,14 +15,15 @@ class Data:
 
     def is_sorted(self) -> bool:
         if self._data == sorted(self._data):
-            self._selected_index = 0
-            self._checked_index = 0
+            self._selected_index = -1
+            self._checked_index = -1
+            self._unsorted_index = -1
             return True
         return False
 
     @property
     def size(self) -> int:
-        return self._size
+        raise DeprecationWarning("Using len()")
 
     @property
     def data(self) -> list:
@@ -30,7 +31,7 @@ class Data:
 
     def shuffle(self) -> None:
         self.selected_index: int = 0
-        self.checked_index: int = 0
+        self.current_index: int = 0
         self.unsorted_index: int = 0
         random.shuffle(self._data)
 
@@ -51,11 +52,11 @@ class Data:
         self._selected_index = value
 
     @property
-    def checked_index(self) -> int:
+    def current_index(self) -> int:
         return self._checked_index
 
-    @checked_index.setter
-    def checked_index(self, value:int) -> None:
+    @current_index.setter
+    def current_index(self, value:int) -> None:
         self._checked_index = value
 
     def __len__(self):

@@ -1,6 +1,7 @@
 import pygame
 from data_class import Data
 from sortalgorithms.base import BaseSort
+from sortvisualizer.sortalgorithms.selectionsort import SelectedSort
 
 def cycle_generator(x):
     while True:
@@ -15,7 +16,7 @@ class MainWindow:
         self._height = 600
         _window_size = (self._width, self._height)
         self._screen = pygame.display.set_mode(_window_size)
-        self._background_color = (200, 200, 200)
+        self._background_color = (0, 0, 0)
         self._sorting = False
         self._animated = False
         pygame.display.set_caption("Sort Visualizer")
@@ -23,6 +24,7 @@ class MainWindow:
         self._sort_algorithms = cycle_generator(
             [
                 BaseSort(Data(size=data_size)),
+                SelectedSort(Data(size=data_size)),
             ]
             )
         self._sort_algorithm :BaseSort = next(self._sort_algorithms)
@@ -60,7 +62,7 @@ class MainWindow:
                             break
                         
     def draw_data(self, data:Data):
-        width = int(self._width / data.size)
+        width = int(self._width / len(data))
         for i, value in enumerate(data.data):
             x = i * width
 
@@ -69,10 +71,12 @@ class MainWindow:
 
             color = (100, 200, 100)
 
+            if i == data.unsorted_index:
+                color = (0, 200, 150)
             if i == data.selected_index:
+                color = (0, 100, 200)
+            if i == data.current_index:
                 color = (200, 100, 100)
-            if i == data.checked_index:
-                color = (100, 100, 200)
             pygame.draw.rect(self._screen, color, (x, y , width, height ))
 
     def change_algorithm(self):
@@ -104,7 +108,7 @@ class MainWindow:
     def start(self):
         clock = pygame.time.Clock()
         while self._is_running:
-            clock.tick(60)
+            clock.tick(120)
             self.check_event()
             if self._sorting:
                 self._sort_algorithm.update(check_animation=self._animated)

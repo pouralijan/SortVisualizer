@@ -2,7 +2,7 @@
 
 ## Todo List
 
-- [ ] Implement Selection Sort
+- [X] Implement Selection Sort
 - [ ] Implement Quick Sort
 - [ ] Implement Merge Sort
 - [ ] and other ...
